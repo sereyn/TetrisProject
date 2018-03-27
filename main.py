@@ -1,10 +1,14 @@
 from qtido import *
 from game import *
+from tools import *
 
 win = creer(800, 600)
 FPS = 60
 
-print(Blocks.rotate(True, Blocks.z))
+testBlock = Blocks.get("Z")
+
+print2DList(testBlock)
+print2DList(Blocks.rotate(True, testBlock))
 
 while not est_fermee(win):
 	attendre_pendant(win, 1000/FPS)
