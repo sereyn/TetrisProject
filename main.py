@@ -1,7 +1,10 @@
 from qtido import *
 
-win = creer(500, 500)
+<<<<<<< HEAD
+win = creer(800, 600)
+=======
 FPS = 60
+>>>>>>> origin/Quentin
 
 #test
 while not est_fermee(win):
