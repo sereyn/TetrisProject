@@ -5,7 +5,7 @@ from tools import *
 win = creer(800, 600)
 FPS = 60
 
-testBlock = Blocks.get("Z")
+testBlock = Blocks.get("z")
 
 print2DList(testBlock)
 print2DList(Blocks.rotate(True, testBlock))

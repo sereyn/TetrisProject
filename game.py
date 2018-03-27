@@ -1,25 +1,20 @@
 class Blocks:
 	#Legend: http://i.imgur.com/9Z0oJXe.png
-	o = [
-	[1, 1],
-	[1, 1]]
-	i = [
-	[1, 1, 1, 1]]
-	j = [
-	[1, 0, 0],
-	[1, 1, 1]]
-	l = [
-	[0, 0, 1],
-	[1, 1, 1]]
-	s = [
-	[0, 1, 1],
-	[1, 1, 0]]
-	z = [
-	[1, 1, 0],
-	[0, 1, 1]]
-	t = [
-	[0, 1, 0],
-	[1, 1, 1]]
+	def get(letter):
+		if letter == "o":
+			return [[1, 1],[1, 1]]
+		if letter == "i": 
+			return [[1, 1, 1, 1]]
+		if letter == "j": 
+			return [[1, 0, 0],[1, 1, 1]]
+		if letter == "l": 
+			return [[0, 0, 1],[1, 1, 1]]
+		if letter == "s": 
+			return [[0, 1, 1],[1, 1, 0]]
+		if letter == "z": 
+			return [[1, 1, 0],[0, 1, 1]]
+		if letter == "t": 
+			return [[0, 1, 0],[1, 1, 1]]
 
 	def rotate(trigoWay, block):
 		w, h = len(block[0]), len(block)
