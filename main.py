@@ -1,5 +1,5 @@
 from qtido import *
 
-win = creer(500, 500)
+win = creer(800, 600)
 
 attendre_fermeture(win)
