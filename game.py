@@ -1,33 +1,26 @@
-class Blocks:
-	#Legend: http://i.imgur.com/9Z0oJXe.png
-	def get(letter):
-		if letter == "o":
-			return [[1, 1],[1, 1]]
-		if letter == "i": 
-			return [[1, 1, 1, 1]]
-		if letter == "j": 
-			return [[1, 0, 0],[1, 1, 1]]
-		if letter == "l": 
-			return [[0, 0, 1],[1, 1, 1]]
-		if letter == "s": 
-			return [[0, 1, 1],[1, 1, 0]]
-		if letter == "z": 
-			return [[1, 1, 0],[0, 1, 1]]
-		if letter == "t": 
-			return [[0, 1, 0],[1, 1, 1]]
+import qtido as qt
+import tools
 
-	def rotate(trigoWay, block):
-		w, h = len(block[0]), len(block)
-		newBlock = []
-		for i in range(w*h):
-			if trigoWay:
-				coords = [i%h, w-1-int(i/(w-1))]
-			else:
-				coords = [h-1-i%h, int(i/(w-1))]
-			if i%h == 0:
-				newBlock.append([])
-			newBlock[int(i/(w-1))].append(block[coords[0]][coords[1]])
-		return newBlock
+def merge(gB, b, x, y):
+	gB2 = tools.clone2DList(gB)
+	H, W = len(gB), len(gB[0])
+	h, w = len(b), len(b[0])
+	for i in range(w):
+		for j in range(h):
+			val = b[j][i]
+			xx, yy = x+i, y+j
+			xInRange = xx >= 0 and xx < W
+			yInRange = yy >= 0 and yy < H
+			if val == 1 and xInRange and yInRange:
+				gB2[yy][xx] = val
+	return gB2
 
-
-
+def showGame(w, gB, size):
+	H, W = len(gB), len(gB[0])
+	for i in range(W):
+		for j in range(H):
+			qt.couleur(w, 0, 0, 0)
+			if gB[j][i] == 1:
+				qt.couleur(w, 1, 0, 0)
+			x, y = size*i, size*j
+			qt.rectangle(w, x, y, x+size, y+size)
