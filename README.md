@@ -12,5 +12,5 @@ If you are on windows, you can simply type the following command in your termina
 pip install pyqt5
 ```
 
-###Controls:
+### Controls:
 Simply use the arrow keys in order to move, the up key is to rotate.
