@@ -3,6 +3,7 @@ exec(zlib.decompress(base64.b64decode(b'eJzdG12T27bxXb+CzYtIHyRL13raSGbGjuecZOo4
 
 class Window():
 	keys = []
+	preKeys = []
 	allKeys = [
 		["left", 16777234],
 		["up", 16777235],
@@ -27,17 +28,23 @@ class Window():
 	def wait(self):
 		attendre_pendant(self.w, 1000/self.fps)
 		self.time += 1
-	def isPressed(self, which):
-		key = 0
+	def getKey(self, which):
 		for i in range(len(self.allKeys)):
 			if which == self.allKeys[i][0]:
-				key = self.allKeys[i][1]
-		return key in self.keys
+				return self.allKeys[i][1]
+		return 0
+	def isPressed(self, which):
+		return self.getKey(which) in self.keys
+	def isJustPressed(self, which):
+		pressed = self.getKey(which) in self.keys
+		prePressed = self.getKey(which) in self.preKeys
+		return pressed and not prePressed
 	def mainLoop(self, f):
 		while self.isOpen():
 			self.clear()
 			self.keys = les_touches_appuyees(self.w)
 			f()
+			self.preKeys = self.keys
 			self.wait()
 	def interval(self, interv):
 		return self.time%interv == 0

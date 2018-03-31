@@ -1,24 +1,32 @@
 from tools import *
 from qtS import *
-import Blocks
+from Blocks import *
 from game import *
+from random import *
 
-w = Window(800, 600, "Tetris", 60)
+cSize, cols, lines = 20, 20, 30
+win = Window(cols*cSize, lines*cSize, "Tetris", 60)
 
-gameBoard = get2DGrid(20, 30)
-testBlock = Blocks.get("t")
-x, y = 0, 0
+gameBoard = get2DGrid(cols, lines)
+blocks = ["o", "i", "j", "l", "s", "z", "t"]
+block = Block(choice(blocks))
 
 def update():
-	global x, y, testBlock, gameBoard, w
-	right = w.isPressed("right")
-	left = w.isPressed("left")
-	x += right-left
-	if w.interval(20) or w.isPressed("down"):
-		y += 1
-	if w.isPressed("up"):
-		testBlock = Blocks.rotate(testBlock)
-	temp = merge(gameBoard, testBlock, x, y)
-	showGame(w, temp, 15)
+	global win, gameBoard, block, cSize
+	block.x += win.isPressed("right")-win.isPressed("left")
+	if win.interval(10) or win.isPressed("down"):
+		block.y += 1
+	if win.isJustPressed("up"):
+		block.rotate()
+	tooLow, tooRight, tooLeft, collide = block.checkPosition(gameBoard)
+	block.x += tooLeft-tooRight
+	if tooLow:
+		block.y -= 1
+		tempBoard = block.merge(gameBoard)
+		gameBoard = tempBoard
+		block = Block(choice(blocks))
+	else:
+		tempBoard = block.merge(gameBoard)
+	showGame(win, tempBoard, cSize)
 
-w.mainLoop(update)
+win.mainLoop(update)
