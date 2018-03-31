@@ -1,8 +1,8 @@
-import qtido as qt
-import tools
+from qtS import *
+from tools import *
 
 def merge(gB, b, x, y):
-	gB2 = tools.clone2DList(gB)
+	gB2 = clone2DList(gB)
 	H, W = len(gB), len(gB[0])
 	h, w = len(b), len(b[0])
 	for i in range(w):
@@ -15,12 +15,12 @@ def merge(gB, b, x, y):
 				gB2[yy][xx] = val
 	return gB2
 
-def showGame(w, gB, size):
+def showGame(window, gB, size):
 	H, W = len(gB), len(gB[0])
 	for i in range(W):
 		for j in range(H):
-			qt.couleur(w, 0, 0, 0)
+			window.setColor(0, 0, 0)
 			if gB[j][i] == 1:
-				qt.couleur(w, 1, 0, 0)
+				window.setColor(255, 0, 0)
 			x, y = size*i, size*j
-			qt.rectangle(w, x, y, x+size, y+size)
+			window.drawRect(x, y, size, size)

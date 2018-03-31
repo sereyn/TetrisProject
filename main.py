@@ -1,26 +1,24 @@
-import tools
-import qtido as qt
+from tools import *
+from qtS import *
 import Blocks
-import game
+from game import *
 
-qt.win = qt.creer(800, 600)
-qt.win.widget.setWindowTitle("Tetris!")
-FPS, TIME = 60, 0
+w = Window(800, 600, "Tetris", 60)
 
-gameBoard = tools.get2DGrid(20, 30)
+gameBoard = get2DGrid(20, 30)
 testBlock = Blocks.get("t")
 x, y = 0, 0
 
-while not qt.est_fermee(qt.win):
-	keys = qt.les_touches_appuyees(qt.win)
-	right = tools.press("right", keys)
-	left = tools.press("left", keys)
+def update():
+	global x, y, testBlock, gameBoard, w
+	right = w.isPressed("right")
+	left = w.isPressed("left")
 	x += right-left
-	if TIME%20 == 0 or tools.press("down", keys):
+	if w.interval(20) or w.isPressed("down"):
 		y += 1
-	if tools.press("up", keys):
+	if w.isPressed("up"):
 		testBlock = Blocks.rotate(testBlock)
-	tools.clear(qt.win)
-	temp = game.merge(gameBoard, testBlock, x, y)
-	game.showGame(qt.win, temp, 15)
-	TIME = tools.wait(qt.win, FPS, TIME)
+	temp = merge(gameBoard, testBlock, x, y)
+	showGame(w, temp, 15)
+
+w.mainLoop(update)

@@ -1,4 +1,4 @@
-#Legend: http://i.imgur.com/9Z0oJXe.png
+# Legend: http://i.imgur.com/9Z0oJXe.png
 def get(letter):
 	if letter == "o":
 		return [
