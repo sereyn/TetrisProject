@@ -2,7 +2,8 @@ from tools import *
 from qtS import *
 from Blocks import *
 from game import *
-from random import *
+from random import choice
+from shutil import rmtree
 
 cSize, cols, lines = 20, 20, 30
 win = Window(cols*cSize, lines*cSize, "Tetris", 60)
@@ -30,3 +31,4 @@ def update():
 	showGame(win, tempBoard, cSize)
 
 win.mainLoop(update)
+rmtree("__pycache__")
