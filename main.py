@@ -2,19 +2,19 @@ from tools import *
 from qtS import *
 from Blocks import *
 from game import *
-from random import choice
 from shutil import rmtree
 
 cSize, cols, lines = 20, 20, 30
 win = Window(cols*cSize, lines*cSize, "Tetris", 60)
 
 gameBoard = get2DGrid(cols, lines)
-blocks = ["o", "i", "j", "l", "s", "z", "t"]
-block = Block(choice(blocks))
+block = Block()
 
 def update():
-	global win, gameBoard, block, cSize
-	block.x += win.isPressed("right")-win.isPressed("left")
+	global gameBoard, block
+	right = win.isJustPressed("right") or win.isPressedSince("right", 5)
+	left = win.isJustPressed("left") or win.isPressedSince("left", 5)
+	block.x += right-left
 	if win.interval(10) or win.isPressed("down"):
 		block.y += 1
 	if win.isJustPressed("up"):
@@ -25,7 +25,7 @@ def update():
 		block.y -= 1
 		tempBoard = block.merge(gameBoard)
 		gameBoard = tempBoard
-		block = Block(choice(blocks))
+		block = Block()
 	else:
 		tempBoard = block.merge(gameBoard)
 	showGame(win, tempBoard, cSize)

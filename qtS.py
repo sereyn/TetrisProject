@@ -16,6 +16,9 @@ class Window():
 		self.fps, self.time = fps, 0
 		self.w = creer(width, height)
 		self.w.widget.setWindowTitle(title)
+		self.tKeys = []
+		for i in self.allKeys:
+			self.tKeys.append(0)
 	def isOpen(self):
 		return not est_fermee(self.w)
 	def setColor(self, r, g, b):
@@ -39,10 +42,20 @@ class Window():
 		pressed = self.getKey(which) in self.keys
 		prePressed = self.getKey(which) in self.preKeys
 		return pressed and not prePressed
+	def isPressedSince(self, which, since):
+		for i in range(len(self.allKeys)):
+			if which == self.allKeys[i][0]:
+				return self.tKeys[i] > since
+		return False
 	def mainLoop(self, f):
 		while self.isOpen():
 			self.clear()
 			self.keys = les_touches_appuyees(self.w)
+			for i in range(len(self.allKeys)):
+				if self.isPressed(self.allKeys[i][0]):
+					self.tKeys[i] += 1
+				else:
+					self.tKeys[i] = 0
 			f()
 			self.preKeys = self.keys
 			self.wait()

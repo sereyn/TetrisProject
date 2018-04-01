@@ -1,4 +1,5 @@
 from tools import *
+from random import choice
 
 # Legend: http://i.imgur.com/9Z0oJXe.png
 def getBlockList(letter):
@@ -47,8 +48,8 @@ def getBlockList(letter):
 
 class Block(object):
 	x, y = 10, 0
-	def __init__(self, letter):
-		self.mat = getBlockList(letter)
+	def __init__(self):
+		self.mat = getBlockList(choice(["o", "i", "j", "l", "s", "z", "t"]))
 		self.x -= int(len(self.mat)/2)
 	def rotate(self):
 		N = len(self.mat)
