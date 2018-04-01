@@ -51,25 +51,30 @@ class Block(object):
 	def __init__(self):
 		self.mat = getBlockList(choice(["o", "i", "j", "l", "s", "z", "t"]))
 		self.x -= int(len(self.mat)/2)
-	def rotate(self):
-		N = len(self.mat)
-		for x in range(0, int(N/2)):
-			for y in range(x, N-x-1):
-				temp = self.mat[x][y]
-				self.mat[x][y] = self.mat[y][N-1-x]
-				self.mat[y][N-1-x] = self.mat[N-1-x][N-1-y]
-				self.mat[N-1-x][N-1-y] = self.mat[N-1-y][x]
-				self.mat[N-1-y][x] = temp
-	def checkPosition(self, gB):
-		tooLow = tooRight = tooLeft = collide = False
+	def rotate(self, inverse=False):
+		if inverse:
+			for i in range(3):
+				self.rotate()
+		else:
+			N = len(self.mat)
+			for x in range(0, int(N/2)):
+				for y in range(x, N-x-1):
+					temp = self.mat[x][y]
+					self.mat[x][y] = self.mat[y][N-1-x]
+					self.mat[y][N-1-x] = self.mat[N-1-x][N-1-y]
+					self.mat[N-1-x][N-1-y] = self.mat[N-1-y][x]
+					self.mat[N-1-y][x] = temp
+	def hasProblem(self, gB):
 		for i in range(len(self.mat[0])):
 			for j in range(len(self.mat)):
 				if self.mat[j][i] != 0:
 					xx, yy = self.x+i, self.y+j
-					tooLow |= yy >= len(gB)
-					tooRight |= xx >= len(gB[0])
-					tooLeft |= xx < 0
-		return tooLow, tooRight, tooLeft, collide
+					if yy >= len(gB) or xx >= len(gB[0]) or xx < 0:
+						return True
+					else:
+						if gB[yy][xx] != 0:
+							return True
+		return False
 	def merge(self, gB):
 		gB2 = clone2DList(gB)
 		for i in range(len(self.mat[0])):

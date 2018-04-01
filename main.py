@@ -15,16 +15,17 @@ def update():
 	right = win.isJustPressed("right") or win.isPressedSince("right", 5)
 	left = win.isJustPressed("left") or win.isPressedSince("left", 5)
 	block.x += right-left
-	if win.interval(10) or win.isPressed("down"):
-		block.y += 1
+	if block.hasProblem(gameBoard):
+		block.x -= right-left
 	if win.isJustPressed("up"):
 		block.rotate()
-	tooLow, tooRight, tooLeft, collide = block.checkPosition(gameBoard)
-	block.x += tooLeft-tooRight
-	if tooLow:
+	if block.hasProblem(gameBoard):
+		block.rotate(True)
+	if win.interval(10) or win.isPressed("down"):
+		block.y += 1
+	if block.hasProblem(gameBoard):
 		block.y -= 1
-		tempBoard = block.merge(gameBoard)
-		gameBoard = tempBoard
+		gameBoard = tempBoard = block.merge(gameBoard)
 		block = Block()
 	else:
 		tempBoard = block.merge(gameBoard)
