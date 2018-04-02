@@ -16,11 +16,10 @@ def getColor(num):
 
 def showGame(window, gB, size):
 	H, W = len(gB), len(gB[0])
+	window.setColor(50, 50, 50)
+	window.drawRect(0, 0, W*size, H*size)
 	for i in range(W):
 		for j in range(H):
 			color = getColor(gB[j][i])
-			x, y = size*i, size*j
-			window.setColor(50, 50, 50)
-			window.drawRect(x, y, size, size)
 			window.setColor(*color)
-			window.drawRect(x+1, y+1, size-2, size-2)
+			window.drawRect(size*i+1, size*j+1, size-2, size-2)
