@@ -2,9 +2,9 @@ from btQt import *
 from block import *
 from board import *
 
-cSize, cols, lines = 20, 20, 30
+cSize, cols, lines = 30, 20, 30
 win = Window(cols*cSize, lines*cSize, "Tetris", 60)
-win.playSound("Data/bgm.mp3")
+# win.playSound("Data/bgm.mp3")
 win.setIcon("Data/icon.png")
 
 sndRotate = win.loadSFX("Data/rotate.mp3")
@@ -39,6 +39,7 @@ def update():
 		tempBoard = gameBoard.clone(True)
 	else:
 		tempBoard.merge(gameBoard, block)
+		tempBoard.addTransparentPiece(block)
 	if win.interval(10):
 		if gameBoard.destroyLines():
 			win.playSFX(sndLine)

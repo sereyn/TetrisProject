@@ -1,4 +1,6 @@
 from btQt import *
+from block import *
+from random import choice
 
 def get2DGrid(w, h):
 	l = []
@@ -29,7 +31,9 @@ def getColor(num):
 		[255, 0, 255],
 		[255, 255, 255]
 	]
-	return colors[num]
+	if num == int(num):
+		return colors[num]
+	return [i/2 for i in colors[int(num)]]
 
 class GameBoard():
 	emptyLines = []
@@ -61,13 +65,30 @@ class GameBoard():
 		if copyContent:
 			gB2.grid = clone2DList(self.grid)
 		return gB2
-	def merge(self, gB, block):
+	def merge(self, gB, block, transparent=False):
 		self.grid = clone2DList(gB.grid)
+		for i in range(len(block.mat[0])):
+			for j in range(len(block.mat)):
+				val, xx, yy = block.mat[j][i], block.x+i, block.y+j
+				if val != 0:
+					if transparent:
+						if self.grid[yy][xx] == 0:
+							self.grid[yy][xx] = val+0.5
+					else:
+						self.grid[yy][xx] = val
+	def addTransparentPiece(self, block):
+		gB2 = self.clone(True)
+		y = block.y
 		for i in range(len(block.mat[0])):
 			for j in range(len(block.mat)):
 				val = block.mat[j][i]
 				if val != 0:
-					self.grid[block.y+j][block.x+i] = val
+					gB2.grid[block.y+j][block.x+i] = 0
+		while not block.hasProblem(gB2):
+			block.y += 1
+		block.y -= 1
+		self.merge(self, block, True)
+		block.y = y
 	def showGame(self, window):
 		window.setColor(50, 50, 50)
 		window.drawRect(0, 0, self.cols*self.cSize, self.lines*self.cSize)
