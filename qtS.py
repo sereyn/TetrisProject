@@ -44,17 +44,10 @@ class Window():
 	def playSound(self, path):
 		self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(path)))
 		self.player.play()
-	def isOpen(self):
-		return not est_fermee(self.w)
 	def setColor(self, r, g, b):
 		couleur(self.w, r/255, g/255, b/255)
 	def drawRect(self, x, y, width, height):
 		rectangle(self.w, x, y, x+width, y+height)
-	def clear(self):
-		effacer(self.w)
-	def wait(self):
-		attendre_pendant(self.w, 1000/self.fps)
-		self.time += 1
 	def getKey(self, which):
 		for i in range(len(self.allKeys)):
 			if which == self.allKeys[i][0]:
@@ -72,8 +65,8 @@ class Window():
 				return self.tKeys[i] > since
 		return False
 	def mainLoop(self, f):
-		while self.isOpen():
-			self.clear()
+		while not est_fermee(self.w):
+			effacer(self.w)
 			self.keys = les_touches_appuyees(self.w)
 			for i in range(len(self.allKeys)):
 				if self.isPressed(self.allKeys[i][0]):
@@ -82,6 +75,7 @@ class Window():
 					self.tKeys[i] = 0
 			f()
 			self.preKeys = self.keys
-			self.wait()
+			attendre_pendant(self.w, 1000/self.fps)
+			self.time += 1
 	def interval(self, interv):
 		return self.time%interv == 0
