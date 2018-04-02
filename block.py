@@ -1,7 +1,5 @@
-from tools import *
 from random import choice
 
-# Legend: http://i.imgur.com/9Z0oJXe.png
 def getBlockList(letter):
 	if letter == "o":
 		return [
@@ -46,11 +44,17 @@ def getBlockList(letter):
 			[0, 7, 0],
 		]
 
-class Block(object):
-	x, y = 10, 0
-	def __init__(self):
+class Block():
+	def __init__(self, gameBoard=None, cols=0):
 		self.mat = getBlockList(choice(["o", "i", "j", "l", "s", "z", "t"]))
-		self.x -= int(len(self.mat)/2)
+		if gameBoard == None:
+			self.x = cols
+		else:
+			self.x = int(gameBoard.cols/2-len(self.mat)/2)
+		self.y = 0
+		self.cols = self.x
+	def newBlock(self):
+		self.__init__(None, self.cols)
 	def rotate(self, inverse=False):
 		if inverse:
 			for i in range(3):
@@ -69,21 +73,9 @@ class Block(object):
 			for j in range(len(self.mat)):
 				if self.mat[j][i] != 0:
 					xx, yy = self.x+i, self.y+j
-					if yy >= len(gB) or xx >= len(gB[0]) or xx < 0:
+					if yy >= gB.lines or xx >= gB.cols or xx < 0:
 						return True
 					else:
-						if gB[yy][xx] != 0:
+						if gB.grid[yy][xx] != 0:
 							return True
 		return False
-	def merge(self, gB):
-		gB2 = clone2DList(gB)
-		for i in range(len(self.mat[0])):
-			for j in range(len(self.mat)):
-				val = self.mat[j][i]
-				if val != 0:
-					xx, yy = self.x+i, self.y+j
-					xInRange = xx >= 0 and xx < len(gB[0])
-					yInRange = yy >= 0 and yy < len(gB)
-					if xInRange and yInRange:
-						gB2[yy][xx] = val
-		return gB2
